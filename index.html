@@ -643,6 +643,31 @@
           }
         };
 
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          // Prevent default behavior for our handled keys
+          if (['ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+            e.preventDefault();
+          }
+          
+          switch (e.code) {
+            case 'ArrowLeft':
+              next(-1); // Previous card
+              break;
+            case 'ArrowRight':
+              next(1); // Next card
+              break;
+            case 'Space':
+              if (state.revealed) {
+                next(1); // If already revealed, go to next card
+              } else {
+                state.revealed = true; // Reveal the answer
+                render();
+              }
+              break;
+          }
+        });
+
         // ---- STARTUP: blank by default, but auto-load last remembered deck if present ----
         try {
           const last = localStorage.getItem('flashcards_last_hash');
